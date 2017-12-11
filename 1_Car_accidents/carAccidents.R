@@ -11,7 +11,7 @@ data$Accident <- as.factor(data$Accident)
 data$Socioeconomic_status <- as.factor(data$Socioeconomic_status)
 summary(data)
 
-plot(data$Age, data$BAC, main="Agec and BAC Scatter Plot", 
+plot(data$Age, data$BAC, main="Age and BAC Scatter Plot", 
      xlab="Age", ylab="BAC", col=data$Accident, pch=19)
 
 
@@ -73,8 +73,8 @@ forestPlot <- function(df, boxLabels, yAxis, modelTitle) {
     theme_bw() +
     theme(panel.grid.minor = element_blank()) +
     scale_y_continuous(breaks = yAxis, labels = boxLabels) +
-    scale_x_continuous(breaks = seq(0,7,1) ) +
-    coord_trans(x = "log10") +
+    scale_x_continuous(breaks = seq(0,270,10) ) +
+    #coord_trans(x = "log10") +
     ylab("") +
     xlab("Odds ratio (log scale)") +
     #annotate(geom = "text", y =1.1, x = 3.5, label ="Model p < 0.001\nPseudo R^2 = 0.10", size = 3.5, hjust = 0) +
@@ -156,7 +156,7 @@ df <- data.frame(
   boxCILow = c(boundsAdj[2,2],boundsAdj[3,2],boundsAdj[4,2],boundsAdj[5,2],boundsAdj[6,2]),
   boxCIHigh = c(boundsAdj[2,3],boundsAdj[3,3],boundsAdj[4,3],boundsAdj[5,3],boundsAdj[6,3])
 )
-forestPlot(df, boxLabels, yAxis, "Crude (unadjusted) model")
+forestPlot(df, boxLabels, yAxis, "Adjusted model")
 
 
 ### 5) What is the probability that a 40 yr male whose BAC is >1%, causes a car accident?
