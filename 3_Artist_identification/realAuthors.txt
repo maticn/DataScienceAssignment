@@ -1,0 +1,4 @@
+1: Pierre Auguste Renoir : OK
+2: Jackson Pollock
+3: Manet : OK
+4: Edgar Degas : OK

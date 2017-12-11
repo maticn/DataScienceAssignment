@@ -1,0 +1,9 @@
+male = 1
+female = 0
+
+yes = 1
+no = 0
+
+lower = 0
+middle = 1
+upper = 2
