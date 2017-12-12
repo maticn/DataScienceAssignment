@@ -2,17 +2,17 @@
 rootFolder = fullfile(pwd, 'images');
 categories = {'manet', 'degas', 'renoir', 'monet'};
 % ImageDatastore operates on image file locations and help you manage the data.
-imds = imageDatastore(fullfile(rootFolder, categories), 'LabelSource', 'foldernames');
+images = imageDatastore(fullfile(rootFolder, categories), 'LabelSource', 'foldernames');
 % Summarize the number of images per category.
-tbl = countEachLabel(imds)  
+numOfImagesPerCategory = countEachLabel(images)  
 
 
 %% Balance the number of images in the training set
-minSetCount = min(tbl{:,2}); % determine the smallest amount of images in a category
+minNumOfImagesPerCategory = min(numOfImagesPerCategory{:,2}); % determine the smallest amount of images in a category
 % Use splitEachLabel method to trim the set.
-imds = splitEachLabel(imds, minSetCount, 'randomize');
+images = splitEachLabel(images, minNumOfImagesPerCategory, 'randomize');
 % Notice that each set now has exactly the same number of images.
-countEachLabel(imds)
+countEachLabel(images)
 
 
 %% Load Pre-trained AlexNet Network
@@ -22,13 +22,13 @@ net = alexnet()
 % net can only process RGB images that are 227-by-227.
 % imds.ReadFcn pre-process images on-the-fly.
 % The imds.ReadFcn is called every time an image is read from the ImageDatastore.
-imds.ReadFcn = @(filename)readAndPreprocessImage(filename);
+images.ReadFcn = @(filename)readAndPreprocessImage(filename);
 
 
 %% Prepare Training and Test Image Sets
 % Pick 30% of images from each set for the training data and the remainder, 70%, for the validation data.
 % Randomize the split to avoid biasing the results.
-[trainingSet, testSet] = splitEachLabel(imds, 0.3, 'randomize');
+[train, test] = splitEachLabel(images, 0.3, 'randomize');
 
 
 %% Extract Training Features Using CNN
@@ -36,7 +36,7 @@ imds.ReadFcn = @(filename)readAndPreprocessImage(filename);
 % Which of the deep layers to choose? Typically starting with the layer right before the classification layer.
 % In net, this layer is named 'fc7'. Let's extract training features using that layer.
 featureLayer = 'fc7';
-trainingFeatures = activations(net, trainingSet, featureLayer, ...
+trainingFeatures = activations(net, train, featureLayer, ...
     'MiniBatchSize', 32, 'OutputAs', 'columns');
 
 
@@ -44,33 +44,33 @@ trainingFeatures = activations(net, trainingSet, featureLayer, ...
 % Use the CNN image features to train a multiclass SVM classifier.
 
 % Get training labels from the trainingSet
-trainingLabels = trainingSet.Labels;
+trainLabels = train.Labels;
 
 % Train multiclass SVM classifier using a fast linear solver, and set
 % 'ObservationsIn' to 'columns' to match the arrangement used for training
 % features.
-classifier = fitcecoc(trainingFeatures, trainingLabels, ...
+classifier = fitcecoc(trainingFeatures, trainLabels, ...
     'Learners', 'Linear', 'Coding', 'onevsall', 'ObservationsIn', 'columns');
 
 
 %% Evaluate Classifier
-% Extract image features from testSet using the CNN
-testFeatures = activations(net, testSet, featureLayer, 'MiniBatchSize', 32);
+% Extract image features from test set using the CNN
+testFeatures = activations(net, test, featureLayer, 'MiniBatchSize', 32);
 
 % Pass CNN image features to trained classifier
 predictedLabels = predict(classifier, testFeatures);
 
 % Get the known labels
-testLabels = testSet.Labels;
+testLabels = test.Labels;
 
 % Tabulate the results using a confusion matrix.
-confMat = confusionmat(testLabels, predictedLabels);
+confusionMatrix = confusionmat(testLabels, predictedLabels);
 
 % Convert confusion matrix into percentage form
-confMat = bsxfun(@rdivide,confMat,sum(confMat,2))
+confusionMatrix = bsxfun(@rdivide, confusionMatrix, sum(confusionMatrix, 2))
 
 % Display the mean accuracy
-mean(diag(confMat))
+mean(diag(confusionMatrix))
 
 
 %% Try the Newly Trained Classifier on Test Images
