@@ -96,14 +96,14 @@ end
 
 
 %% Helper Functions
-function Iout = readAndPreprocessImage(filename)
-    I = imread(filename);
+function preparedImage = readAndPreprocessImage(file)
+    img = imread(file);
 
     % Some images may be grayscale. Replicate the image 3 times to create an RGB image.
-    if ismatrix(I)
-        I = cat(3,I,I,I);
+    if ismatrix(img)
+        img = cat(3, img, img, img);
     end
 
     % Resize the image as required for the CNN.
-    Iout = imresize(I, [227 227]);
+    preparedImage = imresize(img, [227 227]);
 end
