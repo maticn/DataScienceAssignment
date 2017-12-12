@@ -1,8 +1,7 @@
-library(tidyverse)  # data manipulation
-library(cluster)    # clustering algorithms
-library(factoextra) # clustering algorithms & visualization
-
-library("MASS")
+library(ISLR)
+library(caret)
+library(car)
+library(MASS)
 set.seed(7)
 data <- Boston
 
@@ -14,9 +13,11 @@ classFromCrimRate <- function(x) {
   else return (0)
 }
 calculatedClass <- sapply(data$crim, classFromCrimRate)
-data <- data.frame(scale(data))
+# data <- data.frame(scale(data)) #Scaling is done before learning by method train.
 data$Class <- calculatedClass
+data$Class <- as.factor(data$Class)
 data <- data[,-1]
+nrow(data[data$Class == 1,])
 
 
 # Prepare training and test set.
@@ -29,32 +30,55 @@ testDataWithoutClass <- testData[,-14]
 prop.table(table(trainingLabels))
 
 
-# Logistic Regression
-lr_model <- glm(Class ~., family=binomial(logit), data=data)
-summary(lr_model)
-lr_pred <- predict(lr_model, testDataWithoutClass, type="response")
+## Find the correlations between variables.
+nearZeroVariables <- nearZeroVar(trainingData, saveMetrics = TRUE)
+correlations <- cor(trainingData[,-14])
+highCorrelations <- findCorrelation(correlations, cutoff = 0.75)
 
-classFromProbabilities <- function(x) {
-  if (x > 0.5) return (1)
-  else return (0)
-}
-lr_pred_class <- sapply(lr_pred, classFromProbabilities)
-confusionMatrix(table(lr_pred_class, testLabels))
+trainingDataCorr <- trainingData[,-drop(c(4,9))]
+testDataCorr <- testData[,-drop(c(4,9))]
+testDataCorrWithoutClass <- testDataCorr[,-12]
+
+
+# Logistic Regression
+lr_model_all <- train(Class~., data=trainingData, 
+                      method='glm', family=binomial(link='logit'),
+                      preProcess=c('scale', 'center'))
+lr_pred_all <- predict(lr_model_all, testData[,-14])
+confusionMatrix(table(lr_pred_all, testData$Class))
+
+lr_model_corr <- train(Class ~ rad + nox,
+                       data=trainingData, 
+                       method='glm', family=binomial(link='logit'),
+                       preProcess=c('scale', 'center'))
+lr_pred_corr <- predict(lr_model_corr, testData[,-14])
+confusionMatrix(lr_pred_corr, testData$Class)
+vif(lr_model_corr$finalModel)
 
 
 # LDA
-lda_model <- lda(Class ~., data=trainingData)
-summary(lda_model)
-lda_pred <- predict(lda_model, testDataWithoutClass)$class
-confusionMatrix(table(lda_pred, testLabels))
+LDA_model_all <- train(Class~., data=trainingData,
+                       method='lda', 
+                       preProcess=c('scale', 'center'))
+LDA_pred_all <- predict(LDA_model_all, testData[,-14])
+confusionMatrix(LDA_pred_all, testData$Class)
+
+LDA_model_corr <- train(Class~., data=trainingDataCorr,
+             method='lda', 
+             preProcess=c('scale', 'center'))
+LDA_pred_corr <- predict(LDA_model_corr, testDataCorr[,-12])
+confusionMatrix(LDA_pred_corr, testDataCorr$Class)
 
 
 # k-NN
-decrementClass <- function(x) {
-  if (x == 1) return (0)
-  else if (x == 2) return (1)
-  else return (-1)
-}
-k2_pred <- kmeans(testDataWithoutClass, centers = 2, nstart = 100)
-k2_pred_corr <- sapply(k2_pred$cluster, decrementClass)
-confusionMatrix(table(k2_pred_corr, testLabels))
+knnGrid <- expand.grid(.k=c(2))
+knn_model_all <- train(x=trainingData[,-14], method='knn',
+                       y=trainingData$Class, 
+                       preProcess=c('center', 'scale'), 
+                       tuneGrid = knnGrid)
+knn_model_corr <- train(x=trainingDataCorr[,-12], method='knn',
+             y=trainingDataCorr$Class, 
+             preProcess=c('center', 'scale'), 
+             tuneGrid = knnGrid)
+knn_pred <- predict(knn_model_all, testData[,-14])
+confusionMatrix(table(knn_pred, testLabels))
