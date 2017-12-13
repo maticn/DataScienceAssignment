@@ -1,0 +1,94 @@
+>> imageClassification
+
+numOfImagesPerCategory =
+
+  4×2 table
+
+    Label     Count
+    ______    _____
+
+    degas      605 
+    manet      122 
+    monet     1324 
+    renoir    1377 
+
+
+ans =
+
+  4×2 table
+
+    Label     Count
+    ______    _____
+
+    degas     122  
+    manet     122  
+    monet     122  
+    renoir    122  
+
+
+net = 
+
+  SeriesNetwork with properties:
+
+    Layers: [25×1 nnet.cnn.layer.Layer]
+
+
+confusionMatrix =
+
+    0.6667    0.2000    0.0333    0.1000
+    0.2000    0.5667    0.1333    0.1000
+    0.0667    0.0333    0.8667    0.0333
+    0.0667    0.0667    0.1333    0.7333
+
+
+ans =
+
+    0.7083
+
+
+newImage =
+
+    'D:\Razvoj\DataScienceAssignment\3_Artist_identification\images\testImages\1.bmp'
+
+
+label = 
+
+  categorical
+
+     renoir 
+
+
+newImage =
+
+    'D:\Razvoj\DataScienceAssignment\3_Artist_identification\images\testImages\2.bmp'
+
+
+label = 
+
+  categorical
+
+     manet 
+
+
+newImage =
+
+    'D:\Razvoj\DataScienceAssignment\3_Artist_identification\images\testImages\3.bmp'
+
+
+label = 
+
+  categorical
+
+     manet 
+
+
+newImage =
+
+    'D:\Razvoj\DataScienceAssignment\3_Artist_identification\images\testImages\4.bmp'
+
+
+label = 
+
+  categorical
+
+     manet 

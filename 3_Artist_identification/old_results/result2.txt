@@ -1,0 +1,128 @@
+>> imageClassification
+
+numOfImagesPerCategory =
+
+  4×2 table
+
+    Label     Count
+    ______    _____
+
+    degas      605 
+    manet      122 
+    monet     1324 
+    renoir    1377 
+
+
+ans =
+
+  4×2 table
+
+    Label     Count
+    ______    _____
+
+    degas     122  
+    manet     122  
+    monet     122  
+    renoir    122  
+
+
+net = 
+
+  SeriesNetwork with properties:
+
+    Layers: [25×1 nnet.cnn.layer.Layer]
+
+>> imageClassification
+
+numOfImagesPerCategory =
+
+  4×2 table
+
+    Label     Count
+    ______    _____
+
+    degas      605 
+    manet      122 
+    monet     1324 
+    renoir    1377 
+
+
+ans =
+
+  4×2 table
+
+    Label     Count
+    ______    _____
+
+    degas     122  
+    manet     122  
+    monet     122  
+    renoir    122  
+
+
+net = 
+
+  SeriesNetwork with properties:
+
+    Layers: [25×1 nnet.cnn.layer.Layer]
+
+
+confusionMatrix =
+
+    0.5765    0.2118    0.0235    0.1882
+    0.1412    0.6941    0.1059    0.0588
+    0.0235    0.0588    0.7647    0.1529
+    0.0353    0.1529    0.0824    0.7294
+
+
+ans =
+
+    0.6912
+
+
+newImage =
+
+    'D:\Razvoj\DataScienceAssignment\3_Artist_identification\images\testImages\1.bmp'
+
+
+label = 
+
+  categorical
+
+     monet 
+
+
+newImage =
+
+    'D:\Razvoj\DataScienceAssignment\3_Artist_identification\images\testImages\2.bmp'
+
+
+label = 
+
+  categorical
+
+     manet 
+
+
+newImage =
+
+    'D:\Razvoj\DataScienceAssignment\3_Artist_identification\images\testImages\3.bmp'
+
+
+label = 
+
+  categorical
+
+     manet 
+
+
+newImage =
+
+    'D:\Razvoj\DataScienceAssignment\3_Artist_identification\images\testImages\4.bmp'
+
+
+label = 
+
+  categorical
+
+     degas 
