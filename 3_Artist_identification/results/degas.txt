@@ -1,0 +1,90 @@
+>> degas
+
+numOfImagesPerCategory =
+
+  2×2 table
+
+     Label      Count
+    ________    _____
+
+    degas       605  
+    notDegas    364  
+
+
+ans =
+
+  2×2 table
+
+     Label      Count
+    ________    _____
+
+    degas       364  
+    notDegas    364  
+
+
+net = 
+
+  SeriesNetwork with properties:
+
+    Layers: [25×1 nnet.cnn.layer.Layer]
+
+
+confusionMatrix =
+
+    0.8791    0.1209
+    0.1538    0.8462
+
+
+ans =
+
+    0.8626
+
+
+newImage =
+
+    'D:\Razvoj\DataScienceAssignment\3_Artist_identification\images\testImages\1.bmp'
+
+
+label = 
+
+  categorical
+
+     notDegas 
+
+
+newImage =
+
+    'D:\Razvoj\DataScienceAssignment\3_Artist_identification\images\testImages\2.bmp'
+
+
+label = 
+
+  categorical
+
+     notDegas 
+
+
+newImage =
+
+    'D:\Razvoj\DataScienceAssignment\3_Artist_identification\images\testImages\3.bmp'
+
+
+label = 
+
+  categorical
+
+     notDegas 
+
+
+newImage =
+
+    'D:\Razvoj\DataScienceAssignment\3_Artist_identification\images\testImages\4.bmp'
+
+
+label = 
+
+  categorical
+
+     degas 
+
+>> 

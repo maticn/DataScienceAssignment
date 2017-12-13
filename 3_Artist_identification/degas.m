@@ -8,7 +8,8 @@ numOfImagesPerCategory = countEachLabel(images)
 
 
 %% Balance the number of images in the training set
-minNumOfImagesPerCategory = min(numOfImagesPerCategory{:,2}); % determine the smallest amount of images in a category
+% Determine the smallest amount of images in a category.
+minNumOfImagesPerCategory = min(numOfImagesPerCategory{:,2});
 % Use splitEachLabel method to trim the set.
 images = splitEachLabel(images, minNumOfImagesPerCategory, 'randomize');
 % Notice that each set now has exactly the same number of images.
@@ -26,15 +27,15 @@ images.ReadFcn = @(filename)readAndPreprocessImage(filename);
 
 
 %% Prepare Training and Test Image Sets
-% Pick 75% of images from each set for the training data and the remainder, 25%, for the validation data.
-% Randomize the split to avoid biasing the results.
+% Pick 75% of images from each set for the training data and the remainder,
+% 25%, for the validation data. Randomize the split to avoid biasing the results.
 [train, test] = splitEachLabel(images, 0.75, 'randomize');
 
 
 %% Extract Training Features Using CNN
 % Extract features from one of the deeper layers using the activations method.
-% Which of the deep layers to choose? Typically starting with the layer right before the classification layer.
-% In net, this layer is named 'fc7'. Let's extract training features using that layer.
+% Layer right before the classification layer.
+% In net, this layer is named 'fc7'.
 featureLayer = 'fc7';
 trainingFeatures = activations(net, train, featureLayer, ...
     'MiniBatchSize', 32, 'OutputAs', 'columns');
@@ -43,7 +44,7 @@ trainingFeatures = activations(net, train, featureLayer, ...
 %% Train A Multiclass SVM Classifier Using CNN Features
 % Use the CNN image features to train a multiclass SVM classifier.
 
-% Get training labels from the trainingSet
+% Get training labels from the trainingSet.
 trainLabels = train.Labels;
 
 % Train multiclass SVM classifier using a fast linear solver, and set
@@ -54,26 +55,26 @@ classifier = fitcecoc(trainingFeatures, trainLabels, ...
 
 
 %% Evaluate Classifier
-% Extract image features from test set using the CNN
+% Extract image features from test set using the CNN.
 testFeatures = activations(net, test, featureLayer, 'MiniBatchSize', 32);
 
-% Pass CNN image features to trained classifier
+% Pass CNN image features to trained classifier.
 [predictedLabels] = predict(classifier, testFeatures);
 
-% Get the known labels
+% Get the known labels.
 testLabels = test.Labels;
 
 % Tabulate the results using a confusion matrix.
 confusionMatrix = confusionmat(testLabels, predictedLabels);
 
-% Convert confusion matrix into percentage form
+% Convert confusion matrix into percentage form.
 confusionMatrix = bsxfun(@rdivide, confusionMatrix, sum(confusionMatrix, 2))
 
-% Display the mean accuracy
+% Display the mean accuracy.
 mean(diag(confusionMatrix))
 
 
-%% Try the Newly Trained Classifier on Test Images
+%% Try the Newly Trained Classifier on "Validation" Images
 
 % Load test images
 testImagesFolder = fullfile(rootFolder, 'testImages');
@@ -84,13 +85,13 @@ fileNames = char(d.name);
 for idx = 1:length(d)
     newImage = fullfile(testImagesFolder, fileNames(idx, :))
 
-    % Pre-process the images as required for the CNN
+    % Pre-process the images as required for the CNN.
     img = readAndPreprocessImage(newImage);
 
-    % Extract image features using the CNN
+    % Extract image features using the CNN.
     imageFeatures = activations(net, img, featureLayer);
 
-    % Make a prediction using the classifier
+    % Make a prediction using the classifier.
     label = predict(classifier, imageFeatures)
 end
 

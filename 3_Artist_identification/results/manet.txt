@@ -1,0 +1,90 @@
+>> manet
+
+numOfImagesPerCategory =
+
+  2×2 table
+
+     Label      Count
+    ________    _____
+
+    manet       122  
+    notManet    120  
+
+
+ans =
+
+  2×2 table
+
+     Label      Count
+    ________    _____
+
+    manet       120  
+    notManet    120  
+
+
+net = 
+
+  SeriesNetwork with properties:
+
+    Layers: [25×1 nnet.cnn.layer.Layer]
+
+
+confusionMatrix =
+
+    0.8667    0.1333
+    0.1667    0.8333
+
+
+ans =
+
+    0.8500
+
+
+newImage =
+
+    'D:\Razvoj\DataScienceAssignment\3_Artist_identification\images\testImages\1.bmp'
+
+
+label = 
+
+  categorical
+
+     notManet 
+
+
+newImage =
+
+    'D:\Razvoj\DataScienceAssignment\3_Artist_identification\images\testImages\2.bmp'
+
+
+label = 
+
+  categorical
+
+     notManet 
+
+
+newImage =
+
+    'D:\Razvoj\DataScienceAssignment\3_Artist_identification\images\testImages\3.bmp'
+
+
+label = 
+
+  categorical
+
+     manet 
+
+
+newImage =
+
+    'D:\Razvoj\DataScienceAssignment\3_Artist_identification\images\testImages\4.bmp'
+
+
+label = 
+
+  categorical
+
+     manet 
+
+>> 

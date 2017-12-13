@@ -1,0 +1,90 @@
+>> monet
+
+numOfImagesPerCategory =
+
+  2×2 table
+
+     Label      Count
+    ________    _____
+
+    monet       1324 
+    notMonet     361 
+
+
+ans =
+
+  2×2 table
+
+     Label      Count
+    ________    _____
+
+    monet       361  
+    notMonet    361  
+
+
+net = 
+
+  SeriesNetwork with properties:
+
+    Layers: [25×1 nnet.cnn.layer.Layer]
+
+
+confusionMatrix =
+
+    0.9222    0.0778
+    0.1222    0.8778
+
+
+ans =
+
+    0.9000
+
+
+newImage =
+
+    'D:\Razvoj\DataScienceAssignment\3_Artist_identification\images\testImages\1.bmp'
+
+
+label = 
+
+  categorical
+
+     notMonet 
+
+
+newImage =
+
+    'D:\Razvoj\DataScienceAssignment\3_Artist_identification\images\testImages\2.bmp'
+
+
+label = 
+
+  categorical
+
+     monet 
+
+
+newImage =
+
+    'D:\Razvoj\DataScienceAssignment\3_Artist_identification\images\testImages\3.bmp'
+
+
+label = 
+
+  categorical
+
+     notMonet 
+
+
+newImage =
+
+    'D:\Razvoj\DataScienceAssignment\3_Artist_identification\images\testImages\4.bmp'
+
+
+label = 
+
+  categorical
+
+     notMonet 
+
+>> 
