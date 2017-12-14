@@ -3,6 +3,7 @@ library("caret")
 library("ggplot2")
 
 # Read and prepare the data.
+setwd("D:/Razvoj/DataScienceAssignment/1_Car_accidents")
 filePath = "Data_Car_accidents_196.csv"
 data <- read.csv(file=filePath, header=TRUE, sep=";", stringsAsFactors = TRUE)
 data <- data[,2:6]  # remove IDs
